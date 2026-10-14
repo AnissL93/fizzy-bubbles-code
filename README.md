@@ -3,7 +3,9 @@
 A hand-drawn, bubbly monospace font for programming, built from
 [Fuzzy Bubbles](https://github.com/googlefonts/fuzzy-bubbles) by Robert E. Leuschke.
 
-![Fizzy Bubbles Code](preview.png)
+**Original:** <https://github.com/googlefonts/fuzzy-bubbles>
+
+![Fizzy Bubbles Code preview](preview.png)
 
 ## What changed from Fuzzy Bubbles
 
