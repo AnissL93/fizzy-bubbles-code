@@ -28,6 +28,11 @@ def stroke(pen, pts, w, caps=True):
         if area > 0: quad.reverse()               # TrueType outer contours run clockwise
         pen.moveTo(quad[0]); [pen.lineTo(p) for p in quad[1:]]; pen.closePath()
 
+def bezier(p0, p1, p2, p3, n=16):
+    """n+1 points along a cubic curve, for stroke()."""
+    return [tuple((1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t * t * c + t ** 3 * d
+                  for a, b, c, d in zip(p0, p1, p2, p3)) for t in (i / n for i in range(n + 1))]
+
 def rect(pen, x0, y0, x1, y1):
     pen.moveTo((x0, y0)); pen.lineTo((x0, y1)); pen.lineTo((x1, y1)); pen.lineTo((x1, y0)); pen.closePath()
 
@@ -115,7 +120,9 @@ def code_glyphs(f):
     s = 0.8
     redraw(f, g('0'), (s, 0, 0, 1, W / 2 * (1 - s), 0), lambda p: stroke(p, [(205, 150), (395, 540)], w * 0.85))
     # l vs | vs 1 vs I: tailed l, bar from descender to ascender
-    redraw(f, g('l'), (1, 0, 0, 1, -50, 0), lambda p: stroke(p, [(250, 220), (254, 130), (272, 65), (308, 25), (360, 8), (420, 12), (465, 35)], w))
+    # one smooth stroke: slightly leaning stem that bends into the tail (tangents match at the join)
+    l_path = bezier((285, 745), (272, 560), (250, 300), (248, 170)) + bezier((248, 170), (246, 60), (320, 5), (445, 40))[1:]
+    redraw(f, g('l'), extra=lambda p: stroke(p, l_path, w), keep=False)
     fit_y(f, g('|'), -180, 800)
     # punctuation big enough to see
     for c in '.,;:': grow_dots(f, g(c), 1.5)
