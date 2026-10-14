@@ -6,7 +6,6 @@ A hand-drawn, bubbly monospace font for programming, built from
 **Original:** <https://github.com/googlefonts/fuzzy-bubbles>
 
 ![Fizzy Bubbles Code preview](preview.png)
-![Fizzy Bubbles Code Italic preview](preview-italic.png)
 
 ## What changed from Fuzzy Bubbles
 
