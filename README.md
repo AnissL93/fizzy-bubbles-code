@@ -15,11 +15,12 @@ A hand-drawn, bubbly monospace font for programming, built from
 - **Brackets:** `[ ] { }` as tall as `( )`.
 - **Operators:** `< > = - ~` bigger and on the `+` centre line, so `->`, `<=`, `==` line up.
 - **Quotes:** straight, upright `'` and `"`.
+- **Italic and Bold Italic:** Fuzzy Bubbles has no italic, so these are the uprights slanted 10° (box drawing stays upright).
 - **Box drawing:** light and heavy lines `─│┌┐└┘├┤┬┴┼ ━┃┏┓┗┛┣┫┳┻╋`, half lines `╴╵╶╷`, rounded corners `╭╮╯╰`, blocks `█▀▄▌▐`.
 
 ## Install
 
-Copy `FizzyBubblesCode-Regular.ttf` and `FizzyBubblesCode-Bold.ttf` to `~/Library/Fonts` (macOS) or
+Copy the four `FizzyBubblesCode-*.ttf` files (Regular, Bold, Italic, Bold Italic) to `~/Library/Fonts` (macOS) or
 `~/.local/share/fonts` (Linux, then `fc-cache -f`). The family name is `Fizzy Bubbles Code`.
 
 ## Build
@@ -28,7 +29,7 @@ Copy `FizzyBubblesCode-Regular.ttf` and `FizzyBubblesCode-Bold.ttf` to `~/Librar
 uv run --with fonttools build.py
 ```
 
-Reads the original fonts in `source/` and writes both `.ttf` files.
+Reads the original fonts in `source/` and writes all four `.ttf` files.
 
 ## Licence
 

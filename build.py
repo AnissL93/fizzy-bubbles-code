@@ -133,6 +133,20 @@ def code_glyphs(f):
     redraw(f, g('"'), extra=q(215, 385), keep=False)
     box_glyphs(f, w)
 
+SLANT = 10   # italic angle in degrees; Fuzzy Bubbles has no italic, so italics are slanted uprights
+
+def slant(f):
+    """Oblique every glyph around mid x-height, so it stays in its cell; box drawing stays upright to keep tiling."""
+    t, cy = math.tan(math.radians(SLANT)), f['OS/2'].sxHeight / 2
+    upright = {n for cp, n in f.getBestCmap().items() if 0x2500 <= cp <= 0x259F}
+    for name in f.getGlyphOrder():
+        if name not in upright and f['glyf'][name].numberOfContours:
+            redraw(f, name, (1, 0, t, 1, -t * cy, 0))
+    f['post'].italicAngle = -SLANT
+    f['hhea'].caretSlopeRise, f['hhea'].caretSlopeRun = 1000, round(1000 * t)
+    f['head'].macStyle |= 2
+    f['OS/2'].fsSelection = (f['OS/2'].fsSelection | 1) & ~(1 << 6)   # italic on, regular off
+
 def build(src, dst, style):
     f = TTFont(src)
     gs, glyf, hmtx = f.getGlyphSet(), f['glyf'], f['hmtx']
@@ -151,6 +165,7 @@ def build(src, dst, style):
         glyf[name].recalcBounds(glyf)
         hmtx[name] = (W, glyf[name].xMin)
     code_glyphs(f)
+    if 'Italic' in style: slant(f)
     for t in ('GPOS', 'kern', 'hdmx', 'LTSH'):   # kerning would break the grid
         if t in f: del f[t]
     for fr in f['GSUB'].table.FeatureList.FeatureRecord:   # fi/fl/ff ligatures squash two letters into one cell
@@ -160,7 +175,7 @@ def build(src, dst, style):
     f['OS/2'].xAvgCharWidth = W
     f['OS/2'].panose.bProportion = 9           # monospaced
     fam, full = 'Fizzy Bubbles Code', f'Fizzy Bubbles Code {style}'
-    ps = f'FizzyBubblesCode-{style}'
+    ps = f"FizzyBubblesCode-{style.replace(' ', '')}"
     n = f['name']
     cr = n.getDebugName(0) + '; modifications Copyright 2026 AnissL93 (https://github.com/AnissL93/fizzy-bubbles-code)'
     for rec_ in list(n.names):
@@ -171,5 +186,7 @@ def build(src, dst, style):
 
 if __name__ == '__main__':
     here = os.path.dirname(os.path.abspath(__file__))
-    for style in ('Regular', 'Bold'):
-        build(os.path.join(here, 'source', f'FuzzyBubbles-{style}.ttf'), os.path.join(here, f'FizzyBubblesCode-{style}.ttf'), style)
+    for style in ('Regular', 'Bold', 'Italic', 'Bold Italic'):
+        src = 'Bold' if 'Bold' in style else 'Regular'
+        build(os.path.join(here, 'source', f'FuzzyBubbles-{src}.ttf'),
+              os.path.join(here, f"FizzyBubblesCode-{style.replace(' ', '')}.ttf"), style)
