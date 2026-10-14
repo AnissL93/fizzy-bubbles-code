@@ -7,6 +7,16 @@ A hand-drawn, bubbly monospace font for programming, built from
 
 ![Fizzy Bubbles Code preview](preview.png)
 
+### In code
+
+![Python in Fizzy Bubbles Code](fizzy-bubbles-code-python.png)
+
+![TypeScript in Fizzy Bubbles Code](fizzy-bubbles-code-typescript.png)
+
+### In the terminal
+
+![Box drawing and block characters in Fizzy Bubbles Code](fizzy-bubbles-code-terminal.png)
+
 ## What changed from Fuzzy Bubbles
 
 - **Monospace:** every glyph sits in a 600-unit cell, wide ones squeezed, kerning and `fi`/`fl`/`ff` ligatures removed.
